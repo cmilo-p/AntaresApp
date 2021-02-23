@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./facturasTemplate.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <div class="row">
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="ui-fluid">
+                                <p:panelGrid columns="2">
+
+                                    <p:outputLabel value="#{msj.fact_fecha}"/>
+                                    <p:calendar pattern="dd/MM/yyyy"/>
+
+                                    <p:outputLabel value="#{msj.client_nombre}"/>
+                                    <p:selectOneMenu value="">
+                                        <f:selectItem itemLabel="#{msj.select}"/>
+                                        <f:selectItems value="#{clienteController.clienteList}" var="cliente"
+                                                       itemLabel="#{cliente.nombre}" itemValue="#{cliente.idCliente}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msj.fact_subTotal}"/>
+                                    <p:inputNumber value="" placeholder="0.00"/>
+
+                                    <p:outputLabel value="#{msj.fact_iva}"/>
+                                    <p:inputText value="" placeholder="19%" readonly="true"/>
+
+                                    <p:outputLabel value="#{msj.fact_total}"/>
+                                    <p:inputNumber value="" placeholder="0.00"/>
+
+                                    <p:outputLabel value="#{msj.ped_pedido}"/>
+                                    <p:selectOneMenu value="">
+                                        <f:selectItem itemLabel="#{msj.select}"/>
+                                        <f:selectItems value="#{pedidosController.pedidoList}" var="pedido"
+                                                       itemLabel="#{pedido.idPedido}" itemValue="#{pedido.idPedido}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msj.vent_vendedor}"/>
+                                    <p:selectOneMenu value="">
+                                        <f:selectItem itemLabel="#{msj.select}"/>
+                                        <f:selectItems value="#{usuarioController.usuarioList}" var="usuario"
+                                                       itemLabel="#{usuario.nombre}" itemValue="#{usuario.idUsuario}"/>
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="ui-fluid">
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="#{msj.dtll_producto}"/>
+                                    <p:selectOneMenu>
+                                        <f:selectItem itemLabel="#{msj.select}"/>
+                                        <f:selectItems value="#{productoController.productoList}" var="producto"
+                                                       itemLabel="#{producto.producto}" itemValue="#{producto.idProductos}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msj.dtll_cantidad}"/>
+                                    <p:inputNumber placeholder="0.00"/>
+
+                                    <p:outputLabel value="#{msj.dtll_medida}"/>
+                                    <p:selectOneMenu>
+                                        <f:selectItem itemLabel="#{msj.select}"/>
+                                        <f:selectItems value="#{unidadMedidaController.unidadMedidaList}" var="unidad"
+                                                       itemLabel="#{unidad.unidadMedida}" itemValue="#{unidad.idUnidadMedida}"/>
+                                    </p:selectOneMenu>
+                                    
+                                    <p:column/>
+                                    <p:commandButton value="#{msj.btn_registrar}" icon="pi pi-save"
+                                                     actionListener="#{facturaController.crear()}"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

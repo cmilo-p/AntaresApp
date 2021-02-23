@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./clientesTemplate.xhtml">
+
+            <ui:define name="content">
+                
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="clearfix" >
+                                <div class="d-inline float-left">
+                                    <p:commandButton value="#{msj.client_btn}" icon="pi pi-users" iconPos="right"
+                                                     action="adminClientes?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.client_ubicacion}" icon="pi pi-map-marker" iconPos="right"
+                                                     action="ubicaciones?faces-redirect=true"/>
+                                </div>
+                                <div class="d-inline float-right">
+                                    <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out" iconPos="right"
+                                             action="/vistas/adminPanel?faces-redirect=true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <p:separator styleClass="my-4"/>
+                
+                <div class="row">
+                    <h:form id="clientesView" enctype="multipart/form-data">
+                        <p:growl showDetail="true">
+                            <p:autoUpdate/>
+                        </p:growl>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <p:dataTable id="clientesViewTable" value="#{clienteController.clienteList}" var="cliente"
+                                         emptyMessage="#{msj.emptyMsj}" styleClass="text-center mb-4">
+
+                                <f:facet name="header">
+                                    <div class="clearfix">
+                                        <p:commandButton icon="pi pi-user-plus" title="#{msj.btn_registrar}" styleClass="float-left"/>
+                                        <p:commandButton icon="pi pi-upload" title="#{msj.btn_upload}" styleClass="float-left"
+                                                         onclick="PF('dlg1').show();"/>
+
+                                        <h:commandLink styleClass="d-inline float-right ml-3">
+                                            <h:graphicImage library="img" name="icons/pdf.png" styleClass="iconExport"/>
+                                            <p:dataExporter type="pdf" target="clientesViewTable"
+                                                            fileName="AnteresClientes"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink styleClass="d-inline float-right ml-3">
+                                            <h:graphicImage library="img" name="icons/excel.png" styleClass="iconExport"/>
+                                            <p:dataExporter type="xls" target="clientesViewTable"
+                                                            fileName="AnteresClientes"/>
+                                        </h:commandLink>
+
+                                    </div>
+                                </f:facet>
+
+                                <p:column headerText="#{msj.client_id}" filterBy="#{cliente.nit_cedula}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.nit_cedula}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_nombre}" filterBy="#{cliente.nombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.nombre}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_email}" filterBy="#{cliente.correo}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.correo}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_direccion}" filterBy="#{cliente.direccion}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.direccion}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_ciudad}" filterBy="#{cliente.ciudad.ciudad}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.ciudad.ciudad}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_depart}" filterBy="#{cliente.departamento.departamento}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.departamento.departamento}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_pais}" filterBy="#{cliente.pais.paises}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.pais.paises}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.vent_vendedor}" filterBy="#{cliente.vendedor.idUsuario.nombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{cliente.vendedor.idUsuario.nombre}"/>
+                                </p:column>   
+
+                                <p:column exportable="false" width="5%">
+                                    <p:commandButton icon="pi pi-pencil" title="#{msj.btn_modificar}"
+                                                     actionListener="#{clienteController.leer(cliente)}"
+                                                     oncomplete="PF('dlg-clientUpdate').show();" update="clienteUpdateForm"/>
+                                    
+                                    <p:commandButton icon="pi pi-trash" title="#{msj.btn_eliminar}"
+                                                     actionListener="#{clienteController.leer(cliente)}"
+                                                     oncomplete="PF('dlg-clientDelete').show();" update="clientedeleteForm"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+
+                    <p:dialog id="dialog" header="dialogo" widgetVar="dlg1" modal="true" resizable="false">
+                        <h:form enctype="multipart/form-data">
+                            <p:outputLabel value="Subir CSV:"/>
+                            <br/>
+                            <p:fileUpload value="#{clienteController.file}" mode="simple" skinSimple="true"/>
+                            <br/>
+                            <p:commandButton value="Subir Archivo" ajax="false"/>
+                        </h:form>
+                    </p:dialog>
+                    
+                    <p:dialog id="clienteUpdateForm" header="#{msj.client_modificar}" widgetVar="dlg-clientUpdate" modal="true" resizable="false">
+                        <h:form>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="#{msj.client_id}"/>
+                                <p:inputText value="#{clienteController.cliente.idCliente}" readonly="true"/>
+                                
+                                <p:outputLabel value="#{msj.client_nombre}"/>
+                                <p:inputText value="#{clienteController.cliente.nombre}"/>
+                                
+                                <p:outputLabel value="#{msj.client_email}"/>
+                                <p:inputText value="#{clienteController.cliente.correo}"/>
+                                
+                                <p:outputLabel value="#{msj.client_direccion}"/>
+                                <p:inputText value="#{clienteController.cliente.direccion}"/>
+                                
+                                <p:outputLabel value="#{msj.client_ciudad}"/>
+                                <p:selectOneMenu value="#{clienteController.ciudad.codigoCiudad}">
+                                    <f:selectItems value="#{ciudadController.ciudadList}" var="ciudad"
+                                                   itemLabel="#{ciudad.ciudad}" itemValue="#{ciudad.codigoCiudad}"/>
+                                </p:selectOneMenu>
+                                
+                                
+                                <p:outputLabel value="#{msj.client_depart}"/>
+                                <p:selectOneMenu value="#{clienteController.departamento.codigoDepartamento}">
+                                     <f:selectItems value="#{departamentoController.departamentosList}" var="departamento"
+                                                    itemLabel="#{departamento.departamento}" itemValue="#{departamento.codigoDepartamento}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel value="#{msj.client_pais}"/>
+                                <p:selectOneMenu value="#{clienteController.pais.codigoPais}">
+                                    <f:selectItems value="#{paisController.paisList}" var="pais"
+                                                   itemLabel="#{pais.paises}" itemValue="#{pais.codigoPais}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil" 
+                                                 actionListener="#{clienteController.modificar()}"
+                                                 oncomplete="PF('dlg-clientUpdate').hide();" update=":clientesView:clientesViewTable"/>
+
+                                <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times" 
+                                                 immediate="true" onclick="PF('dlg-clientUpdate').hide();"/>
+                                
+                            </p:panelGrid>
+                            
+                        </h:form>
+                    </p:dialog>
+
+                    <p:dialog id="clientedeleteForm" header="#{msj.dlg_confir_delete}" widgetVar="dlg-clientDelete" modal="true" resizable="false">
+                        <h:form>
+                            <p:panelGrid columns="2">
+                                
+                                <!--cliente id referencia -->
+                                
+                                <p:commandButton value="#{msj.btn_eliminar}" icon="pi pi-trash" 
+                                                 actionListener="#{clienteController.eliminar()}"
+                                                 oncomplete="PF('dlg-clientDelete').hide();" update=":clientesView:clientesViewTable"/>
+
+                                <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times" 
+                                                 immediate="true" onclick="PF('dlg-clientDelete').hide();"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:dialog>
+
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

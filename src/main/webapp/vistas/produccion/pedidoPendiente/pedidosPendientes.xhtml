@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../../templates/allFooterTemplate.xhtml">
+
+            <ui:define name="top">
+                <h:form id="menuForm">
+                    <div class="row">
+                        
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h1>#{msj.op_pedPendiente}</h1>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-11 col-lg-11 col-xl-11 pr-0">
+                            <p:commandButton value="#{msj.btn_actualizar}" icon="pi pi-undo"/>                                       
+                            <p:commandButton value="#{msj.btn_imprimir}" icon="pi pi-file"/>                                       
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1 pl-0">
+                            <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out" iconPos="right"
+                                             action="/vistas/produccion/moduloProduccion?faces-redirect=true"/>
+                        </div>
+                        
+                    </div>
+                    <p:separator/>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="pedPendientesForm">
+                    <p:dataTable id="PedPendientes" value="#{pedidosController.pedidoList}" var="pedido"
+                                 paginator="true" rowsPerPageTemplate="10,15,20" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 emptyMessage="#{msj.emptyMsj}" styleClass="text-center">
+
+                        <p:column headerText="#{msj.ped_pedido}">
+                            <h:outputText value="#{pedido.idPedido}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.ped_fecha}">
+                            <h:outputText value="#{pedido.fechaPedido}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msj.ped_entrega}">
+                            <h:outputText value="#{pedido.fechaEntrega}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msj.ped_estado}">
+                            <h:outputText value="#{pedido.estado.estado}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./ordenTemplate.xhtml">
+
+            <ui:define name="content">
+
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="clearfix" >
+                                <div class="d-inline float-left">
+                                    <p:commandButton value="#{msj.btn_crear}" icon="pi pi-file" iconPos="right"
+                                                     action="ordenCreate?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_consultar}" icon="pi pi-search" iconPos="right"
+                                                     action="ordenView?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-undo" iconPos="right"
+                                                     action="ordenUpdate?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_eliminar}" icon="pi pi-trash" iconPos="right"
+                                                     action="ordenDelete?faces-redirect=true"/>
+                                </div>
+                                <div class="d-inline float-right">
+                                    <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out" iconPos="right"
+                                                     action="/vistas/produccion/moduloProduccion?faces-redirect=true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <p:separator styleClass="my-4"/>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-3">
+                        <h:form id="ordenUpdate">
+                            <p:dataTable id="ordenUpdateTable" value="#{ordenProduccionController.ordenList}" var="orden"
+                                         emptyMessage="#{msj.emptyMsj}" styleClass="text-center mb-3">
+
+                                <p:column headerText="#{msj.op_id}" filterBy="#{orden.idOrdenProduccion}" filterMatchMode="contains">
+                                    <h:outputText value="#{orden.idOrdenProduccion}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.op_fecha}">
+                                    <h:outputText value="#{orden.fechaProduccion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msj.op_maquina}">
+                                    <h:outputText value="#{orden.maquina.maquina}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.op_pedido}">
+                                    <h:outputText value="#{orden.noPedido.idPedido}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.op_usuario}">
+                                    <h:outputText value="#{orden.productor.idUsuario.nombre}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil"
+                                                     actionListener="#{ordenProduccionController.leer(orden)}"
+                                                     update="oProdUpdate" oncomplete="PF('dlg-ordenUpdate').show();"/>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </h:form>
+                    </div>
+                </div>
+
+                <p:dialog id="oProdUpdate" header="#{msj.op_modificar}" widgetVar="dlg-ordenUpdate" modal="true" resizable="false">
+                    <h:form id="updateOrdenForm">
+                        <p:panelGrid columns="2">
+
+                            <p:outputLabel for="updateIdOrden" value="#{msj.op_id}"/>
+                            <p:inputText id="updateIdOrden" readonly="true"
+                                         value="#{ordenProduccionController.orden.idOrdenProduccion}"/>
+
+                            <p:outputLabel for="updateFecha" value="#{msj.op_fecha}"/>
+                            <p:calendar id="updateFecha" pattern="dd/MM/yyyy"
+                                        value="#{ordenProduccionController.orden.fechaProduccion}"/>
+
+                            <p:outputLabel for="updateMaquina" value="#{msj.op_maquina}"/>
+                            <p:selectOneMenu id="updateMaquina" value="#{ordenProduccionController.maquina.idMaquina}">
+                                <f:selectItem itemLabel="#{msj.select}"/>
+                                <f:selectItems value="#{maquinaController.maquinaList}" var="maquina"
+                                               itemLabel="#{maquina.maquina}" itemValue="#{maquina.idMaquina}"/>
+                            </p:selectOneMenu>
+
+                            <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil"
+                                             actionListener="#{ordenProduccionController.modificar()}"
+                                             oncomplete="PF('dlg-ordenUpdate').hide();" update=":ordenUpdate:ordenUpdateTable"/>
+
+                            <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times" 
+                                             immediate="true" onclick="PF('dlg-ordenUpdate').hide();"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

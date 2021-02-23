@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <title>#{msj.si_tituloWeb}</title>
+    </h:head>
+    <h:body>
+        <p:dataView value="#{inventarioController.inventarioList}" var="prod"
+                    gridIcon="pi pi-th-large" listIcon="pi pi-bars"
+                    paginator="true" rowsPerPageTemplate="10,15,20"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+            <p:dataViewGridItem>
+                <p:panel header="#{prod.producto.producto}" style="text-justify">
+                    <h:panelGrid columns="1" style="width: 100%">
+
+                        <h:outputText value="#{prod.stock}"/>
+                        <h:outputText value="#{prod.unidadMedida.unidadMedida}"/>
+                        <h:outputText value="#{prod.tipoMaterial.tipoMaterial}"/>
+
+                    </h:panelGrid>
+                </p:panel>
+            </p:dataViewGridItem>
+
+            <p:dataViewListItem>
+                <h:panelGrid columns="1" style="width: 100%">
+                    <p:outputPanel styleClass="border-bottom border-secondary">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            
+                            <h:outputText value="#{msj.inv_producto} :"/>
+                            <h:outputText value="#{prod.producto.producto} :" styleClass="font-weight-bold"/>
+
+                            <h:outputText value="#{msj.inv_stock} :"/>
+                            <h:outputText value="#{prod.stock}" styleClass="font-weight-bold"/>
+
+                            <h:outputText value="#{msj.inv_undMedida} :"/>
+                            <h:outputText value="#{prod.unidadMedida.unidadMedida}" styleClass="font-weight-bold"/>
+
+                            <h:outputText value="#{msj.inv_tipMaterial} :"/>
+                            <h:outputText value="#{prod.tipoMaterial.tipoMaterial}" styleClass="font-weight-bold"/>
+
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:panelGrid>
+            </p:dataViewListItem>
+        </p:dataView>
+    </h:body>
+</html>
+

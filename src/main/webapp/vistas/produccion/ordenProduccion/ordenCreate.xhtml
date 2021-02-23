@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./ordenTemplate.xhtml">
+
+            <ui:define name="content">
+
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="clearfix" >
+                                <div class="d-inline float-left">
+                                    <p:commandButton value="#{msj.btn_crear}" icon="pi pi-file" iconPos="right"
+                                                     action="ordenCreate?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_consultar}" icon="pi pi-search" iconPos="right"
+                                                     action="ordenView?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-undo" iconPos="right"
+                                                     action="ordenUpdate?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_eliminar}" icon="pi pi-trash" iconPos="right"
+                                                     action="ordenDelete?faces-redirect=true"/>
+                                </div>
+                                <div class="d-inline float-right">
+                                    <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out" iconPos="right"
+                                                     action="/vistas/produccion/moduloProduccion?faces-redirect=true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <p:separator styleClass="my-4"/>
+                
+                <h:form>
+                    <p:growl id="msj" showDetail="true" life="3000">
+                        <p:autoUpdate/>
+                    </p:growl>
+                    <div class="ui-fluid">
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.ped_pedido}"/>
+                                <p:selectOneMenu value="#{ordenProduccionController.pedido.idPedido}">
+                                    <f:selectItem itemLabel="#{msj.select}"/>
+                                    <f:selectItems value="#{pedidosController.pedidoList}" var="ped"
+                                                   itemLabel="#{ped.idPedido}" itemValue="#{ped.idPedido}"/>
+                                </p:selectOneMenu>  
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.op_id}"/>
+                                <p:inputText value="#{ordenProduccionController.orden.idOrdenProduccion}"/>  
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.op_fecha}"/>
+                                <p:calendar pattern="dd/MM/yyyy" value="#{ordenProduccionController.orden.fechaProduccion}"/>  
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.op_usuario}"/>
+                                <p:selectOneMenu value="#{ordenProduccionController.productor.idProductor}">
+                                    <f:selectItem itemValue="#{msj.select}"/>
+                                    <f:selectItems value="#{usuarioController.usuarioList}" var="usuario"
+                                                   itemLabel="#{usuario.nombre}" itemValue="#{usuario.idUsuario}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+                        
+                        <hr/>
+                        
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.dtll_producto}"/>
+                                <p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{msj.select}"/>
+                                    <f:selectItems value="#{productoController.productoList}" var="producto"
+                                                   itemLabel="#{producto.producto}" itemValue="#{producto.idProductos}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.dtll_cantidad}"/>
+                                <p:inputNumber placeholder="0.00"/>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.dtll_medida}"/>
+                                <p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{msj.select}"/>
+                                    <f:selectItems value="#{unidadMedidaController.unidadMedidaList}" var="unidad"
+                                                   itemLabel="#{unidad.unidadMedida}" itemValue="#{unidad.idUnidadMedida}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="&nbsp;"/>
+                                <p:commandButton value="#{msj.dtll_btn_ingresar}"
+                                                 update="tabla" type="button" styleClass="btn btn-warning mx-0" 
+                                                 icon="pi pi-plus"/>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+
+                        <p:dataTable id="tabla" var="detalle"
+                                     styleClass="mt-4" emptyMessage="#{msj.emptyMsj}">
+
+                            <p:column headerText="#{msj.inv_producto}">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="#{msj.inv_cantidad}">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="#{msj.inv_undMedida}">
+                                <h:outputText/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.op_observacion}"/>
+                                <p:inputTextarea cols="30" rows="5" value="#{ordenProduccionController.orden.observacion}"/>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="#{msj.op_maquina}"/>
+                                <p:selectOneMenu value="#{ordenProduccionController.maquina.idMaquina}">
+                                    <f:selectItem itemLabel="#{msj.select}"/>
+                                    <f:selectItems value="#{maquinaController.maquinaList}" var="maquina"
+                                                   itemLabel="#{maquina.maquina}" itemValue="#{maquina.idMaquina}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{msj.inv_tipMaterial}"/>
+                                <p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{msj.select}"/>
+                                    <f:selectItems value="#{tipoMaterialController.tipoMaterialList}" var="material"
+                                                   itemLabel="#{material.tipoMaterial}" itemValue="#{material.idTipoMaterial}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:commandButton value="Registrar" actionListener="#{ordenProduccionController.registrar()}"/>
+                            </p:panelGrid>
+                            
+                            
+                            
+                        </p:panelGrid>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

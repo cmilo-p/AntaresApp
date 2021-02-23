@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../templates/allFooterTemplate.xhtml">
+
+            <ui:define name="top">
+
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                        <h:form>
+                            <p:commandButton value="#{msj.adm_usuarios}" action="admini_console/adminUsuarios?faces-redirect=true"
+                                             styleClass="nav-link nav-img nav-users text-center m-4 p-2"/>
+
+                            <p:commandButton value="#{msj.adm_maquinas}" action="adminPanel?faces-redirect=true"
+                                             styleClass="nav-link nav-img nav-machine text-center m-4 p-2"/>
+
+                            <p:commandButton value="#{msj.adm_conceptos}" action="admini_console/maestroConceptos?faces-redirect=true"
+                                             styleClass="nav-link nav-img nav-config  text-center m-4 p-2"/>
+                        </h:form>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                        <h:form id="adminPanel">
+                            <div class="jumbotron mt-5">
+                                <h1 class="display-4 text-center">#{msj.si_titulo}</h1>
+                                <hr class="my-5"/>
+                                <div class="nav justify-content-center">
+                                    <p:link value="#{msj.modulo_ventas}" outcome="ventas/moduloVentas?faces-redirect=true"
+                                            styleClass="nav-link nav-img nav-ventas"/>
+
+                                    <p:link value="#{msj.modulo_almacen}" outcome="almacen/moduloAlmacen?faces-redirect=true"
+                                            styleClass="nav-link nav-img nav-almacen"/>
+
+                                    <p:link value="#{msj.modulo_produccion}" outcome="produccion/moduloProduccion?faces-redirect=true"
+                                            styleClass="nav-link nav-img nav-produccion"/>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                        <h:form>
+                            <p:commandButton value="#{msj.adm_clientes}" action="admini_console/clientes/adminClientes?faces-redirect=true"
+                                    styleClass="nav-link nav-img nav-clientes text-center m-4 p-2"/>
+                            <!--outcome="admini_console/envioCorreos?faces-redirect=true"-->
+                            <p:commandButton value="#{msj.adm_email}" 
+                                    styleClass="nav-link nav-img nav-email text-center m-4 p-2" 
+                                    onclick="PF('dlg-email').show();"/>
+
+                            <p:link value="#{msj.btn_salir}" outcome="login?faces-redirect=true"
+                                    styleClass="nav-link nav-img nav-exit text-center m-4 p-2"/>
+                        </h:form>
+                    </div>
+                </div>
+                
+                <p:dialog header="#{msj.adm_email}" widgetVar="dlg-email" modal="true" resizable="false">
+                    <h:form>
+                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="ui-fluid">
+                                <h:panelGrid columns="1" styleClass="w-100">
+                                    <p:outputLabel value="#{msj.mn_mjsPara}:"/>
+                                    <p:inputText value="#{emailJSFManagedBean.to}"
+                                                 validator="#{emailJSFManagedBean.validateEmail}"
+                                                 label="to"
+                                                 id="to"
+                                                 size="50">
+                                    </p:inputText>
+                                    <p:column/>
+
+                                    <p:outputLabel value="#{msj.mn_asunto}:"/>
+                                    <p:inputText value="#{emailJSFManagedBean.subject}"
+                                                 validatorMessage="Requiere el Asunto"
+                                                 label="subject"
+                                                 id="subject"
+                                                 size="50">
+                                    </p:inputText>
+                                    <p:column/>
+
+                                    <p:outputLabel value="#{msj.mn_mjsMensaje}:"/>
+                                    <p:inputTextarea id="descr" cols="50" rows="5"
+                                                     value="#{emailJSFManagedBean.descr}">
+                                    </p:inputTextarea>
+                                    <p:column/>
+
+                                    <p:commandButton action="#{emailJSFManagedBean.submitEmail()}"
+                                                     value="#{msj.mn_enviar}" id="submit" oncomplete="PF('dlg-email').hide();"/>
+                                    
+                                    <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times" 
+                                                     immediate="true" onclick="PF('dlg-email').hide();"/>
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

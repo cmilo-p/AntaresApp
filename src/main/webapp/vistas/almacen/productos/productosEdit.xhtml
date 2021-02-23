@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./productosTemplate.xhtml">
+
+            <ui:define name="content">
+                <h:form id="updateProductoForm">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 my-2">
+                            <p:dataTable id="viewProductosForm" value="#{productoController.productoList}" var="prod" 
+                                         emptyMessage="#{msj.emptyMsj}" styleClass="text-center">
+
+                                <p:column headerText="#{msj.prod_id}" filterBy="#{prod.idProductos}" filterMatchMode="contains">
+                                    <h:outputText value="#{prod.idProductos}"/> 
+                                </p:column>
+
+                                <p:column headerText="#{msj.inv_producto}" filterBy="#{prod.producto}" filterMatchMode="contains">
+                                    <h:outputText value="#{prod.producto}"/> 
+                                </p:column>
+
+                                <p:column headerText="#{msj.inv_tipMaterial}" filterBy="#{prod.tipoMaterial.tipoMaterial}" filterMatchMode="contains">
+                                    <h:outputText value="#{prod.tipoMaterial.tipoMaterial}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.prod_precio}" filterBy="#{prod.precioUnitario}" filterMatchMode="contains">
+                                    <h:outputText value="$ #{prod.precioUnitario}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil"
+                                                     actionListener="#{productoController.leer(prod)}"
+                                                     update="dialog" oncomplete="PF('dlg1').show();"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+                
+                <p:dialog id="dialog" header="#{msj.prod_modificar}" widgetVar="dlg1" modal="true" resizable="false">
+                    <h:form id="updateProducto">
+                        <h:panelGrid columns="2">
+                            
+                            <p:outputLabel for="updateProducto" value="#{msj.prod_id}"/>
+                            <p:inputText id="updateProducto" value="#{productoController.producto.idProductos}" readonly="true"/>
+                            
+                            <p:outputLabel for="updateTMaterial" value="#{msj.inv_tipMaterial}"/>
+                            <p:selectOneMenu id="updateTMaterial" value="#{productoController.material.idTipoMaterial}">
+                                <f:selectItem itemLabel="#{msj.select}"/>
+                                <f:selectItems value="#{tipoMaterialController.tipoMaterialList}" var="material"
+                                               itemLabel="#{material.tipoMaterial}" itemValue="#{material.idTipoMaterial}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="updatePrecioU" value="#{msj.prod_precio}"/>
+                            <p:inputText id="updatePrecioU" value="#{productoController.producto.precioUnitario}"/>
+                            
+                            <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil"
+                                             actionListener="#{productoController.modificar()}"
+                                             oncomplete="PF('dlg1').hide();" update="updateProductoForm:viewProductosForm"/>
+                            <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times"
+                                             immediate="true" onclick="PF('dlg1').hide();"/>
+                            
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

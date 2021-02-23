@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../templates/allFooterTemplate.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h1>#{msj.adm_conceptos}</h1>
+                            <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out"
+                                             action="/vistas/adminPanel?faces-redirect=true"/>
+                        </div>
+                    </div>
+                </h:form>
+                <p:separator/>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="conceptosView">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
+                            <h1>Tipo de Material</h1>
+                            <p:dataTable id="conceptosViewTable" value="#{tipoMaterialController.tipoMaterialList}" var="material"
+                                         scrollable="true" scrollHeight="178"
+                                         emptyMessage="#{msj.emptyMsj}">
+                                <f:facet name="header">
+                                    <div class="clearfix">
+                                        <p:commandButton icon="pi pi-file" styleClass="float-left"/>
+                                        <p:commandButton icon="pi pi-pencil" styleClass="float-right"/>
+                                        <p:commandButton icon="pi pi-trash" styleClass="float-right"/>
+                                    </div>
+                                </f:facet>
+                                <p:column>
+                                    <h:outputText value="#{material.idTipoMaterial}"/>
+                                </p:column>
+                                <p:column headerText="#{msj.inv_tipMaterial}">
+                                    <h:outputText value="#{material.tipoMaterial}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
+                            <h1>Estados de Formato</h1>
+                            <p:dataTable value="#{estadoController.estadoList}" var="estado"
+                                         scrollable="true" scrollHeight="178" emptyMessage="#{msj.emptyMsj}">
+                                <f:facet name="header">
+                                    <div class="clearfix">
+                                        <p:commandButton icon="pi pi-file" styleClass="float-left"/>
+                                        <p:commandButton icon="pi pi-pencil" styleClass="float-right"/>
+                                        <p:commandButton icon="pi pi-trash" styleClass="float-right"/>
+                                    </div>
+                                </f:facet>
+                                <p:column>
+                                    <h:outputText value="#{estado.idEstados}"/>
+                                </p:column>
+                                <p:column headerText="#{msj.ped_estado}">
+                                    <h:outputText value="#{estado.estado}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
+                            <h1>Roles</h1>
+                            <p:dataTable value="#{rolController.rolesList}" var="rol" 
+                                         scrollable="true" scrollHeight="178" emptyMessage="#{msj.emptyMsj}">
+                                <f:facet name="header">
+                                    <div class="clearfix">
+                                        <p:commandButton icon="pi pi-file" styleClass="float-left"/>
+                                        <p:commandButton icon="pi pi-pencil" styleClass="float-right"/>
+                                        <p:commandButton icon="pi pi-trash" styleClass="float-right"/>
+                                    </div>
+                                </f:facet>
+                                <p:column>
+                                    <h:outputText value="#{rol.idRol}"/>
+                                </p:column>
+                                <p:column headerText="#{msj.adm_rol}">
+                                    <h:outputText value="#{rol.rol}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 px-5">
+                            <h1>Unidades de Medida</h1>
+                            <p:dataTable value="#{unidadMedidaController.unidadMedidaList}" var="unidad" 
+                                         scrollable="true" scrollHeight="178" emptyMessage="#{msj.emptyMsj}">
+                                <f:facet name="header">
+                                    <div class="clearfix">
+                                        <p:commandButton icon="pi pi-file" styleClass="float-left"/>
+                                        <p:commandButton icon="pi pi-pencil" styleClass="float-right"/>
+                                        <p:commandButton icon="pi pi-trash" styleClass="float-right"/>
+                                    </div>
+                                </f:facet>
+                                <p:column>
+                                    <h:outputText value="#{unidad.idUnidadMedida}"/>
+                                </p:column>
+                                <p:column headerText="#{msj.inv_undMedida}">
+                                    <h:outputText value="#{unidad.unidadMedida}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+                <div class="mb-4"/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

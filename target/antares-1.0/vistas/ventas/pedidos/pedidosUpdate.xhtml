@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./pedidosTemplate.xhtml">
+
+            <ui:define name="content">
+
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="clearfix" >
+                                <div class="d-inline float-left">
+                                    <p:commandButton value="#{msj.btn_crear}" icon="pi pi-file" iconPos="right"
+                                                     action="pedidosCreate?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_consultar}" icon="pi pi-search" iconPos="right"
+                                                     action="pedidosView?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-undo" iconPos="right"
+                                                     action="pedidosUpdate?faces-redirect=true"/>
+
+                                    <p:commandButton value="#{msj.btn_eliminar}" icon="pi pi-trash" iconPos="right"
+                                                     action="pedidosDelete?faces-redirect=true"/>
+                                </div>
+                                <div class="d-inline float-right">
+                                    <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out" iconPos="right"
+                                                     action="/vistas/ventas/moduloVentas?faces-redirect=true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <p:separator styleClass="my-4"/> 
+                
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-3">
+                        <h:form id="pedidosUpdate">
+                            <p:dataTable id="pedidosUpdateTable" value="#{pedidosController.pedidoList}" var="pedido"
+                                         emptyMessage="#{msj.emptyMsj}" styleClass="text-center mb-4">
+
+                                <p:column headerText="#{msj.ped_pedido}" filterBy="#{pedido.idPedido}" filterMatchMode="contains">
+                                    <h:outputText value="#{pedido.idPedido}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.ped_fecha}">
+                                    <h:outputText value="#{pedido.fechaPedido}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msj.ped_entrega}">
+                                    <h:outputText value="#{pedido.fechaEntrega}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msj.ped_estado}">
+                                    <h:outputText value="#{pedido.estado.estado}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msj.client_nombre}">
+                                    <h:outputText value="#{pedido.cliente.nombre}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil"
+                                                     actionListener="#{pedidosController.leer(pedido)}"
+                                                     update="pedUpdate" oncomplete="PF('dlg-pedUpdate').show();"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+
+                <p:dialog id="pedUpdate" header="#{msj.ped_modificar}" widgetVar="dlg-pedUpdate" modal="true" resizable="false">
+                    <h:form id="updatePedidosForm">
+                        <p:panelGrid columns="2">
+
+                            <p:outputLabel for="pedidoUpdate" value="#{msj.ped_pedido}"/>
+                            <p:inputText id="pedidoUpdate" value="#{pedidosController.pedido.idPedido}" readonly="true"/>
+
+                            <p:outputLabel for="fechaPedUpdate" value="#{msj.ped_fecha}"/>
+                            <p:calendar id="fechaPedUpdate" pattern="dd/MM/yyyy" value="#{pedidosController.pedido.fechaPedido}"/>
+
+                            <p:outputLabel for="entregaUpdate" value="#{msj.ped_entrega}"/>
+                            <p:calendar id="entregaUpdate" pattern="dd/MM/yyyy" value="#{pedidosController.pedido.fechaEntrega}"/>
+
+                            <p:outputLabel for="estadoUpdate" value="#{msj.ped_estado}"/>
+                            <p:selectOneMenu id="estadoUpdate" value="#{pedidosController.estado.idEstados}">
+                                <f:selectItem itemLabel="#{msj.select}"/>
+                                <f:selectItems value="#{estadoController.estadoList}" var="estado"
+                                               itemLabel="#{estado.estado}" itemValue="#{estado.idEstados}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="clienteUpdate" value="#{msj.client_nombre}"/>
+                            <p:selectOneMenu id="clienteUpdate" value="#{pedidosController.cliente.idCliente}">
+                                <f:selectItem itemLabel="#{msj.select}"/>
+                                <f:selectItems value="#{clienteController.clienteList}" var="clientes"
+                                               itemLabel="#{clientes.nombre}" itemValue="#{clientes.idCliente}"/>
+                            </p:selectOneMenu>
+
+                            <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil"
+                                             actionListener="#{pedidosController.modificar()}"
+                                             oncomplete="PF('dlg-pedUpdate').hide()" update=":pedidosUpdate:pedidosUpdateTable"/>
+
+                            <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times"
+                                             immediate="true" onclick="PF('dlg-pedUpdate').hide();"/>
+
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

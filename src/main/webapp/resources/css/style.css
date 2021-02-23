@@ -1,0 +1,83 @@
+.container-fluid, .container{
+    min-height: calc(100vh - 96px);
+}
+.bg-yellow{
+    background-color: #d19405;
+}
+.text-yellow{
+    color: #4c3000;
+}
+.bg-grey{
+    background-color: #9c9586;
+}
+.text-grey{
+    color:#9c9586;
+}
+.ui-corner-all,
+.ui-corner-top,
+.ui-corner-bottom{
+    border-radius: 0;
+}
+.img{
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.img-login{
+    background-image: url(img/loginback.jpg);
+}
+.login-form{
+    background-color: #fff;
+    border-radius: 1em;
+    margin-top: 20vh;
+    padding: 3em;
+}
+.nav-img::before{
+    content: '';
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 64px;
+    width: 64px;
+}
+.nav-ventas::before{
+    background-image: url(img/adminPanel/vent_icon.png);
+}
+.nav-almacen::before{
+    background-image: url(img/adminPanel/almac_icon.png);
+}
+.nav-produccion::before{
+    background-image: url(img/adminPanel/prod_icon.png);
+}
+.nav-users::before{
+    background-image: url(img/adminPanel/users_icon.png);
+}
+.nav-machine::before{
+    background-image: url(img/adminPanel/maquina_icon.png);
+}
+.nav-config::before{
+    background-image: url(img/adminPanel/config_icon.png);
+}
+.nav-clientes::before{
+    background-image: url(img/adminPanel/clientes_icon.png);
+}
+.nav-email::before{
+    background-image: url(img/adminPanel/email_icon.png);
+}
+.nav-exit::before{
+    background-image: url(img/adminPanel/exit_icon.png);
+}
+.img-modules{
+    min-width: 100%;
+    height: 62vh;
+    opacity: .8;
+}
+.iconExport {
+    height: 40px;
+    width: 40px;
+}
+
+
+
+

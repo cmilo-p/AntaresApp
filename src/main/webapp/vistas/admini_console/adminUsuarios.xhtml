@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../templates/allFooterTemplate.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h1>#{msj.adm_usuarios}</h1>
+                            <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out"
+                                             action="/vistas/adminPanel?faces-redirect=true"/>
+                        </div>
+                    </div>
+
+                </h:form>
+                <p:separator styleClass="my-4"/>  
+            </ui:define>
+
+            <ui:define name="content">
+
+                <div class="row">
+                    <h:form id="userView">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-5">
+
+                            <p:dataTable id="userViewTable" value="#{usuarioController.usuarioList}" var="usuario"
+                                         emptyMessage="#{msj.emptyMsj}" styleClass="text-center mb-4">
+
+                                <f:facet name="header">
+                                    <div class="clearfix">
+                                        <p:commandButton icon="pi pi-user-plus" title="#{msj.btn_registrar}" styleClass="float-left"
+                                                         onclick="PF('dlg-createUser').show()"/>
+                                        
+                                        <h:commandLink styleClass="d-inline float-right ml-3">
+                                            <h:graphicImage library="img" name="icons/pdf.png" styleClass="iconExport"/>
+                                            <p:dataExporter type="pdf" target="userViewTable"
+                                                            fileName="AnteresUsersList"/>
+                                        </h:commandLink>
+                                        
+                                        <h:commandLink styleClass="d-inline float-right ml-3">
+                                            <h:graphicImage library="img" name="icons/excel.png" styleClass="iconExport"/>
+                                            <p:dataExporter type="xls" target="userViewTable"
+                                                            fileName="AnteresUsersList"/>
+                                        </h:commandLink>
+                                        
+                                    </div>
+                                </f:facet>  
+
+                                <p:column filterBy="#{usuario.idUsuario}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.idUsuario}"/>
+                                </p:column>
+
+                                <p:column headerText="Nombre" filterBy="#{usuario.nombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.nombre}"/>
+                                </p:column>
+
+                                <p:column headerText="Apellidos" filterBy="#{usuario.apellidos}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.apellidos}"/>
+                                </p:column>
+
+                                <p:column headerText="Correo" filterBy="#{usuario.correo}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.correo}"/>
+                                </p:column>
+
+                                <p:column headerText="Usuario" filterBy="#{usuario.usuario}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.usuario}"/>
+                                </p:column>
+
+                                <p:column headerText="Rol Asignado" filterBy="#{usuario.rol.rol}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.rol.rol}"/>
+                                </p:column>
+
+                                <p:column exportable="false">
+                                    <p:commandButton icon="pi pi-user-edit" title="Modificar Usuario"
+                                                     actionListener="#{usuarioController.leer(usuario)}"
+                                                     update="updateUser" oncomplete="PF('dlg-update').show();"/>
+                                    
+                                    <p:commandButton icon="pi pi-key" title="Modificar Contraseña"
+                                                     actionListener="#{usuarioController.leer(usuario)}"
+                                                     update="passUser" oncomplete="PF('dlg-pass').show();"/>
+                                    
+                                    <p:commandButton icon="pi pi-ban" title="Bloquear Usuario"
+                                                     actionListener="#{usuarioController.leer(usuario)}"
+                                                     update="deleteUser" oncomplete="PF('dlg-delete').show();"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
+                
+                <p:dialog id="createUser" header="Modificar Usuario" widgetVar="dlg-createUser" modal="true" resizable="false">
+                    <h:form id="createUserForm">
+                        <p:panelGrid columns="3" layout="grid" styleClass="px-3">
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                
+                                <p:outputLabel for="nonmbreLog" value="Nombre"/>
+                                <p:inputText id="nonmbreLog" value="#{usuarioController.usuario.nombre}" required="true" autocomplete="off"/>
+                                
+                                <p:outputLabel for="usuarioLog" value="Usuario"/>
+                                <p:inputText id="usuarioLog" value="#{usuarioController.usuario.usuario}" required="true" autocomplete="off"/>
+                                
+                                <p:outputLabel for="passwordLog" value="Contraseña"/>
+                                <p:password id="passwordLog" value="#{usuarioController.usuario.contraseña}" required="true" 
+                                            validatorMessage="Las Contreseñas no Coinciden" match="passwordLog2"/>
+                                
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                
+                                <p:outputLabel for="apellidoLog" value="Apellido"/>
+                                <p:inputText id="apellidoLog" value="#{usuarioController.usuario.apellidos}" required="true" autocomplete="off"/>
+                                
+                                <p:outputLabel for="emailLog" value="Correo"/>
+                                <p:inputText id="emailLog" value="#{usuarioController.usuario.correo}" required="true" autocomplete="off"/>
+                                
+                                <p:outputLabel for="passwordLog2" value="Confirmar Contraseña"/>
+                                <p:password id="passwordLog2" required="true"/>
+                                
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                
+                                <p:outputLabel for="rolLog" value="Asignar Rol:"/>
+                                <h:panelGrid columns="3" cellpadding="5">
+                                    <p:selectOneRadio id="rolLog" value="#{usuarioController.rol.idRol}" layout="grid" columns="1">
+                                        <f:selectItems value="#{rolController.rolesList}" var="usuario"
+                                                       itemLabel="#{usuario.rol}" itemValue="#{usuario.idRol}"/>
+                                    </p:selectOneRadio>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="2" styleClass="mr-5 mt-3">
+                                    <p:commandButton value="Registrar" icon="pi pi-save"
+                                                     actionListener="#{usuarioController.modificar()}"
+                                                     oncomplete="PF('dlg-createUser').hide();" update=":userView:userViewTable"/>
+                                    
+                                    <p:commandButton value="Cancelar" icon="pi pi-times" 
+                                                     immediate="true" onclick="PF('dlg-createUser').hide();"/>
+                                </h:panelGrid>
+                                
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog> 
+                    
+                
+                <p:dialog id="updateUser" header="Modificar Usuario" widgetVar="dlg-update" modal="true" resizable="false">
+                    <h:form id="updateUserForm">
+                        <p:panelGrid columns="2">
+                            
+                            <p:outputLabel value="No Usuario"/>
+                            <p:inputText value="#{usuarioController.usuario.idUsuario}" readonly="true" autocomplete="off"/>
+                            
+                            <p:outputLabel value="Nombre"/>
+                            <p:inputText value="#{usuarioController.usuario.nombre}" autocomplete="off"/>
+                            
+                            <p:outputLabel value="Apellidos" />
+                            <p:inputText value="#{usuarioController.usuario.apellidos}" autocomplete="off"/>
+                            
+                            <p:outputLabel value="Correo Electronico"/>
+                            <p:inputText value="#{usuarioController.usuario.correo}" autocomplete="off"/>
+                            
+                            <p:outputLabel value="Nombre de Usuario"/>
+                            <p:inputText value="#{usuarioController.usuario.usuario}" autocomplete="off"/>
+                            
+                            <p:outputLabel value="Rol de Ingreso"/>
+                            <p:selectOneMenu  value="#{usuarioController.rol.idRol}">
+                                <f:selectItems value="#{rolController.rolesList}" var="roles"
+                                               itemLabel="#{roles.rol}" itemValue="#{roles.idRol}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:commandButton value="#{msj.btn_modificar}" icon="pi pi-pencil" 
+                                             actionListener="#{usuarioController.modificar()}"
+                                             oncomplete="PF('dlg-update').hide();" update=":userView:userViewTable"/>
+                            
+                            <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times" 
+                                             immediate="true" onclick="PF('dlg-update').hide();"/>
+                            
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+                
+                <p:dialog id="passUser" header="Restablecer Contraseña" widgetVar="dlg-pass" modal="true" resizable="false">
+                    <h:form id="passUserForm">
+                        <p:panelGrid columns="2">
+                            
+                            <p:outputLabel value="No Usuario"/>
+                            <p:inputText value="#{usuarioController.usuario.idUsuario}" readonly="true" autocomplete="off"/>
+                            
+                            <p:outputLabel value="Nombre"/>
+                            <p:inputText value="#{usuarioController.usuario.nombre}" readonly="true" autocomplete="off"/>
+                            
+                            <p:outputLabel for="passForm" value="Nueva Contraseña"/>
+                            <p:password id="passForm" value="#{usuarioController.usuario.contraseña}"
+                                        validatorMessage="Las Contreseñas no Coinciden" match="passForm2"/>
+                            
+                            <p:outputLabel for="passForm2" value="Confirmar Contraseña"/>
+                            <p:password id="passForm2" required="true"/>
+                            
+                            <p:commandButton value="Cambiar" icon="pi pi-lock-open" 
+                                             action="#{usuarioController.restablecerContraseña()}"
+                                             update=":userView:userViewTable"/>
+
+                            <p:commandButton value="Cancelar" icon="pi pi-times" 
+                                             immediate="true" onclick="PF('dlg-pass').hide();"/>
+                            
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+                
+                <p:dialog id="deleteUserForm" header="#{msj.dlg_confir_delete}" widgetVar="dlg-delete" modal="true" resizable="false">
+                    <h:form id="deleteUser">
+                        <p:panelGrid columns="2">
+                            <p:commandButton value="#{msj.btn_eliminar}" icon="pi pi-trash" 
+                                             actionListener="#{usuarioController.eliminar()}"
+                                             oncomplete="PF('dlg-delete').hide();" update=":userView:userViewTable"/>
+
+                            <p:commandButton value="#{msj.btn_cancelar}" icon="pi pi-times" 
+                                             immediate="true" onclick="PF('dlg-delete').hide();"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

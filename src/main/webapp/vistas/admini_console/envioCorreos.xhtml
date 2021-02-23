@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../templates/allFooterTemplate.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <p:growl showDetail="true" life="6000">
+                        <p:autoUpdate/>
+                    </p:growl>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h1>#{msj.adm_email}</h1>
+                            <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out"
+                                             action="/vistas/adminPanel?faces-redirect=true"/>
+                        </div>
+                    </div>
+
+                </h:form>
+                <p:separator styleClass="my-4"/>  
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="row">
+                    <h:form>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="ui-fluid">
+                                <h:panelGrid columns="1" styleClass="w-100">
+                                    <p:outputLabel value="PARA: "/>
+                                    <p:inputText value="#{emailJSFManagedBean.to}"
+                                                 validator="#{emailJSFManagedBean.validateEmail}"
+                                                 label="to"
+                                                 id="to"
+                                                 size="50">
+                                    </p:inputText>
+                                    <p:column/>
+
+                                    <p:outputLabel value="ASUNTO: "/>
+                                    <p:inputText value="#{emailJSFManagedBean.subject}"
+                                                 validatorMessage="Requiere el Asunto"
+                                                 label="subject"
+                                                 id="subject"
+                                                 size="50">
+                                    </p:inputText>
+                                    <p:column/>
+
+                                    <p:outputLabel value="MENSAJE: "/>
+                                    <p:inputTextarea id="descr" cols="50" rows="5"
+                                                     value="#{emailJSFManagedBean.descr}">
+                                    </p:inputTextarea>
+                                    <p:column/>
+
+                                    <p:commandButton action="#{emailJSFManagedBean.submitEmail()}"
+                                                     value="Enviar" id="submit"/>
+
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

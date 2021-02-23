@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../../templates/allFooterTemplate.xhtml">
+
+            <ui:define name="top">
+                <h:form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <h1>#{msj.op_inventario}</h1>
+                            <div class="clearfix" >
+                                <div class="d-inline float-left">
+                                    <p:commandButton value="#{msj.btn_salir}" icon="pi pi-sign-out" iconPos="right"
+                                                     action="/vistas/produccion/moduloProduccion?faces-redirect=true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <p:separator styleClass="my-4"/> 
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-4">
+                        <h:form id="invProduccionForm">
+                            <p:dataTable id="inventarioViewTable" value="#{inventarioController.inventarioList}" var="inv"
+                                         emptyMessage="#{msj.emptyMsj}" styleClass="text-center mb-4">
+
+                                <f:facet name="header">
+                                    <div class="clearfix">
+
+                                        <h:commandLink styleClass="d-inline float-right ml-3">
+                                            <h:graphicImage library="img" name="icons/pdf.png" styleClass="iconExport"/>
+                                            <p:dataExporter type="pdf" target="inventarioViewTable"
+                                                            fileName="InvebtarioMprima"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink styleClass="d-inline float-right ml-3">
+                                            <h:graphicImage library="img" name="icons/excel.png" styleClass="iconExport"/>
+                                            <p:dataExporter type="xls" target="inventarioViewTable"
+                                                            fileName="InvebtarioMprima"/>
+                                        </h:commandLink>
+
+                                    </div>
+                                </f:facet> 
+
+                                <p:column headerText="#{msj.inv_producto}" filterBy="#{inv.producto.producto}" filterMatchMode="contains">
+                                    <h:outputText value="#{inv.producto.producto}" />
+                                </p:column>
+
+                                <p:column headerText="#{msj.inv_stock}" filterBy="#{inv.stock}" filterMatchMode="contains">
+                                    <h:outputText value="#{inv.stock}" />
+                                </p:column>
+
+                                <p:column headerText="#{msj.inv_undMedida}" filterBy="#{inv.unidadMedida.unidadMedida}" filterMatchMode="contains">
+                                    <h:outputText value="#{inv.unidadMedida.unidadMedida}" />
+                                </p:column>
+
+                                <p:column headerText="#{msj.inv_tipMaterial}" filterBy="#{inv.tipoMaterial.tipoMaterial}" filterMatchMode="contains">
+                                    <h:outputText value="#{inv.tipoMaterial.tipoMaterial}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

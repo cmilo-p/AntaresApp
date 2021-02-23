@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <title>#{msj.si_tituloWeb}</title>
+    </h:head>
+
+    <h:body>
+        <div class="container-fluid">
+
+            <div id="top">
+                <ui:insert name="top">
+                    <h:form>
+                        <div class="row">
+                            
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <h1>#{msj.ped_titulo}</h1>
+                            </div>
+                        </div>
+                    </h:form>
+                </ui:insert>
+            </div>
+
+            <div id="content" class="center_content">
+                <ui:insert name="content">Content</ui:insert>
+            </div>
+
+        </div>
+
+        <div id="bottom">
+            <ui:insert name="bottom">
+                <footer class="bg-yellow align-items-center">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="text-center text-yellow py-2">
+                            <p class="mb-0">#{msj.si}</p>
+                            <p class="mb-2">#{msj.si_titulo}&copy;</p>
+                            <p class="mr-3 mb-0 d-inline-block"><i class="pi pi-envelope"/>#{msj.si_correo}</p>
+                            <p class="mr-3 mb-0 d-inline-block"><i class="pi pi-mobile"/>#{msj.si_telFijo}</p>
+                            <p class="mr-3 mb-0 d-inline-block"><i class="pi pi-mobile"/>#{msj.si_celular}</p>
+                        </div>
+                    </div>
+                </footer>
+            </ui:insert>
+        </div>
+
+    </h:body>
+
+</html>
